@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 
 void main() {
   runApp(new MaterialApp(
@@ -22,7 +23,7 @@ class TutorialHome extends State<MyApp> {
         child:new ListView(
           // This next line does the trick.
           scrollDirection: Axis.horizontal,
-          children: <Widget>[
+          children: <Widget>[ 
             new Container(
               width: 160.0,
               color: Colors.red,
@@ -43,10 +44,11 @@ class TutorialHome extends State<MyApp> {
               width: 160.0,
               color: Colors.orange,
             ),
+            
           ],
         )
       ),
-      new ListText(items: new List<String>.generate(10000, (i) => "Item $i"),)
+      new itemListContainer()
     ];
     void _onTapSelected(int index){
       setState((){
@@ -97,105 +99,80 @@ class TutorialHome extends State<MyApp> {
           
 }
 
-class Product {
-  const Product ({this.name});
-  final String name;
-}
-typedef void CartChangeCallback(Product product,bool inCart);
-class ShoppingListItem extends StatelessWidget  {
-  ShoppingListItem({Product product, this.inCart, this.onCartChanged})
-      : product = product,
-        super(key: new ObjectKey(product));
-  final Product product;
-  final bool inCart;
-  final CartChangeCallback onCartChanged;
-  Color _getColor(BuildContext context){
-    return inCart ? Colors.black54 : Theme.of(context).primaryColor;
-  }
-  TextStyle _getTextStyle(BuildContext context) {
-    if (!inCart) return null;
-
-    return new TextStyle(
-      color: Colors.black54,
-      decoration: TextDecoration.lineThrough,
-    );
-  }
-
+class itemListContainer extends StatelessWidget{
   @override
   Widget build(BuildContext context){
-    return new ListTile(
-      onTap: (){
-        onCartChanged(product, !inCart);
-      },
-      leading: new CircleAvatar(
-        backgroundColor: _getColor(context),
-        child: new Text(product.name[0]),
-      ),
-      title: new Text(product.name, style: _getTextStyle(context)),
-    );
-  }
-}
-class ShoppingList extends StatefulWidget {
-  ShoppingList({Key key, this.products}) : super(key: key);
-
-  final List<Product> products;
-
-  // The framework calls createState the first time a widget appears at a given
-  // location in the tree. If the parent rebuilds and uses the same type of
-  // widget (with the same key), the framework will re-use the State object
-  // instead of creating a new State object.
-
-  @override
-  _ShoppingListState createState() => new _ShoppingListState();
-}
-
-class _ShoppingListState extends State<ShoppingList> {
-  Set<Product> _shoppingCart = new Set<Product>();
-
-  void _handleCartChanged(Product product, bool inCart) {
-    setState(() {
-      // When user changes what is in the cart, we need to change _shoppingCart
-      // inside a setState call to trigger a rebuild. The framework then calls
-      // build, below, which updates the visual appearance of the app.
-
-      if (inCart)
-        _shoppingCart.add(product);
-      else
-        _shoppingCart.remove(product);
-    });
-  }
-
-  @override
-  Widget build(BuildContext context) {
+    final width = MediaQuery.of(context).size.width;
+    print("width: $width");
     return new Container(
-      child: new ListView(
-        padding: new EdgeInsets.symmetric(vertical: 8.0),
-        children: widget.products.map((Product product) {
-          return new ShoppingListItem(
-            product: product,
-            inCart: _shoppingCart.contains(product),
-            onCartChanged: _handleCartChanged,
-          );
-        }).toList(),
-      ),
-    );
-  }
-}
+      child: new Wrap(
+        children: [
+          new Container(
+            child: new Column(
+              children:[
+                Image.network("https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1617008593.29783290.jpg"),
+                new Container(
+                  child: Text("小米11 Ultra"),
+                ),
+                new Container(
+                  child: Text(
+                    "天玑 800U处理器，5000mAh电池，小金刚品质",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+                new Container(
+                  child: Text(
+                    "¥1299",
+                    style:TextStyle(
+                      color:Colors.red
+                    )
+                  ),
+                ),
+              ]
+            ),
+            width:(width-30)/2,
 
-class ListText extends StatelessWidget{
-  final List<String> items;
-  ListText({Key key,@required this.items}) :super(key: key);
-  @override 
-  Widget build(BuildContext context){
-    return Container(
-      child: new ListView.builder(
-        itemCount: items.length,
-        itemBuilder: (context, index){
-          return ListTile(
-            title: new Text("${items[index]}"),
-          );
-        },
+          ),
+          new Container(
+            child: new Column(
+              children:[
+                Image.network("https://cdn.cnbj0.fds.api.mi-img.com/b2c-shopapi-pms/pms_1617008593.29783290.jpg"),
+                new Container(
+                  child: Text("小米11 Ultra"),
+                ),
+                new Container(
+                  child: Text(
+                    "天玑 800U处理器，5000mAh电池，小金刚品质",
+                    overflow: TextOverflow.ellipsis,
+                    maxLines: 1,
+                  ),
+                ),
+                new Container(
+                  child: Text(
+                    "¥1299",
+                    style:TextStyle(
+                      color:Colors.red
+                    )
+                  ),
+                ),
+              ]
+            ),
+            width:(width-30)/2,
+          ),
+          
+        ],
+        spacing:10.0,
+        runSpacing :10.0,
+        alignment:WrapAlignment.spaceEvenly,
+        direction: Axis.vertical,
+        verticalDirection:VerticalDirection.down,
+        runAlignment : WrapAlignment.start,
+        crossAxisAlignment:WrapCrossAlignment.start,
       ),
+      width: width,
+      color: Colors.yellow,
+      alignment:Alignment.topLeft,
     );
   }
 }
