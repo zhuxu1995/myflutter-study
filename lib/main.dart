@@ -5,20 +5,23 @@ import 'package:myappflutter/component/footerTabBar.dart';
 import 'package:myappflutter/model/member.dart';
 import 'package:myappflutter/routes/routes.dart';
 import 'package:provider/provider.dart';
-
+final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 void main() {
   Map<String, WidgetBuilder> routes = new Map<String, WidgetBuilder>();
   MyRoutes.routes_list.forEach((val) => routes.addAll(val['route']));
+  
   print("route $routes");
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: new MemberModel()),
+        ChangeNotifierProvider.value(value: new TokenStatus()),
       ],
       child: new MaterialApp(
         title: 'Flutter Tutorial',
         home: new MyApp(),
         routes:routes,
+        navigatorKey: navigatorKey,
         onGenerateRoute: (RouteSettings routeSettings){
           print("ddd $routeSettings");
         },

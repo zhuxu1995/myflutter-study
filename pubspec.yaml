@@ -33,6 +33,7 @@ dependencies:
   dio: ^4.0.0
   shared_preferences: ^2.0.5
   provider: ^5.0.0
+  shelf_proxy: ^1.0.0
 
 dev_dependencies:
   flutter_test:
@@ -55,7 +56,7 @@ flutter:
   #   - images/a_dot_ham.jpeg
   assets:
     - assets/images/
-
+    - assets/config/config.json
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 

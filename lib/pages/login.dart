@@ -18,7 +18,7 @@ class _LoginPage extends State<Login> {
   DhflocalStore dhflocalStore =new DhflocalStore();
   @override
   Widget build(BuildContext context) {
-    httpservice = new HttpService(context);
+    httpservice = new HttpService();
     return Scaffold(
       appBar: AppBar(
         title: Text('登录'),
@@ -93,11 +93,13 @@ class _LoginPage extends State<Login> {
                                  if(result['token']==null){
                                    
                                  }else{
-                                   
-                                    httpservice.memberGet().then((result){
-
-                                    });
                                     dhflocalStore.setToken(result['token']);
+                                    httpservice.memberGet().then((member){
+                                      if(member.isNotEmpty){
+                                        dhflocalStore.setData("currentUserInfo",member);
+                                        Navigator.of(context).pop();
+                                      }
+                                    });
                                     // dynamic token =dhflocalStore.getToken();
                                     // print("token: $token");
                                  }

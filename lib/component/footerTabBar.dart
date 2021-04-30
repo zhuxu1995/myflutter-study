@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:myappflutter/pages/catitems.dart';
 import 'package:myappflutter/pages/new_page.dart';
 import 'package:myappflutter/pages/login.dart';
 import 'package:myappflutter/pages/my_member.dart';
@@ -14,6 +15,7 @@ class footTabBarNew extends State<footTabBar>{
   Widget body =new StaticNavigatorPage();
   List<BottomNavigationBarItem> items= [
             BottomNavigationBarItem(icon: Icon(Icons.home),label: "首页"),
+            BottomNavigationBarItem(icon: Icon(Icons.border_all),label: "分类"),
             BottomNavigationBarItem(icon: Icon(Icons.search),label: "我的")
   ];
   void _onTapSelected(int index){
@@ -22,7 +24,10 @@ class footTabBarNew extends State<footTabBar>{
           if (index==0){
             title = "首页";
             body = new StaticNavigatorPage();
-          } else if(index==1) {
+          }else if(index==1){
+            title = "分类";
+            body = new Container(child:new SideCatViewMenu());
+          } else if(index==2) {
             title = "我的";
             body =new MyMember();
           }

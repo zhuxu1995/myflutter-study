@@ -12,14 +12,17 @@ class MyMember extends StatefulWidget{
 }
 tokenGet(context) async{
       dynamic result= await dhflocalStore.getToken();
-      HttpService httpService= new HttpService(context);
-      print("tokenget11 $result");
+      HttpService httpService= new HttpService();
       dynamic member;
       if(result!=null){
-        member = await httpService.memberGet();
-        print("member $member");
+        try{
+          member= await  dhflocalStore.getCurrentUserInfo();
+          // member = await httpService.memberGet();
+        }catch(e){
+          
+        }
       }else{
-        Navigator.pushNamed(context, "/login");
+        // Navigator.pushNamed(context, "/login");
       }
       return member;
 }
@@ -33,11 +36,12 @@ class MyMemberNew extends State<MyMember>{
         builder: (BuildContext context, AsyncSnapshot snapshot){
           if(snapshot.connectionState == ConnectionState.done ){
             print("fff ${snapshot.data}");
-            member_model.setMember(snapshot.data);
+            if(snapshot.data!=null){
+              Provider.of<MemberModel>(context).setMember(snapshot.data);
+              // member_model.setMember(snapshot.data);
+            }
           } 
           return MemberAvatar();
-          print("context $context");
-          print("snapshot $snapshot");
         },
       ),
     );
@@ -51,8 +55,8 @@ class _MemberAvatar extends State<MemberAvatar>{
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    MemberModel member_model = Provider.of<MemberModel>(context);  
-    print("name ${member_model.member}");
+    // MemberModel member_model = Provider.of<MemberModel>(context);  
+    // print("name ${member_model.member}");
     return new Container(
       child: new Padding(
         padding: EdgeInsets.only(left: 10.0,top:15.0,right: 10.0,bottom: 15.0),
@@ -74,13 +78,12 @@ class Avatar extends Container{
     if(path){
 
     }else{
-      avatarImg = Image.asset("images/avatar.png",width: 40.0);
+      avatarImg = Image.asset("assets/images/avatar.png",width: 40.0);
     }
   }
   @override
   Widget build(BuildContext context) {
     // TODO: implement build
-    print("avatar build");
     MemberModel member_model = Provider.of<MemberModel>(context);  
     Map<String,dynamic> member =member_model.member;
     if(member.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
@@ -88,13 +91,13 @@ class Avatar extends Container{
     }
     print("member build ${member.runtimeType.toString()}");
     String path ;
-    if(member.isNotEmpty){
+    if(member!=null&&member.isNotEmpty){
       path=member["avatar"];
     }
     if(path!=null){
       avatarImg = Image.network(path,width: 40.0);
     }else{
-      avatarImg = Image.asset("images/avatar.png",width: 40.0);
+      avatarImg = Image.asset("assets/images/avatar.png",width: 40.0);
     }
     return Container(
       child: avatarImg,
@@ -115,22 +118,97 @@ class AvatarMemberTools extends StatefulWidget{
 class _AvatarMemberTools extends State<AvatarMemberTools>{
   @override
   Widget build(BuildContext context) {
+    MemberModel member_model = Provider.of<MemberModel>(context);  
+    Map<String,dynamic> member =member_model.member;
+    if(member.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
+      member =new Map<String, dynamic>.from(member);
+    }
     // TODO: implement build
     return new Container(
       child: Column(
         children: [
           new Row(
             children: [
-              new Text("登录")
+             Denlgu(),
             ],
           ),
           new Row(
-
+            children:[
+              Jifen()
+            ],
           ),
         ],
         crossAxisAlignment:CrossAxisAlignment.start
       ),
-      height:50.0
+      height:40.0,
+      padding:EdgeInsets.only(left:10.0,),
     );
   }
 }
+class Denlgu extends StatefulWidget{
+  @override
+  _Denlgu createState()=> new _Denlgu();
+  
+}
+class _Denlgu extends State<Denlgu>{
+    @override
+    Widget build(BuildContext context) {
+      MemberModel member_model = Provider.of<MemberModel>(context);  
+      Map<String,dynamic> member =member_model.member;
+      if(member.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
+        member =new Map<String, dynamic>.from(member);
+      }
+      String title;
+      if(member!=null&&member.isNotEmpty){
+        title=member["name"];
+      }else{
+        title="登陆";
+      }
+      // TODO: implement build
+      return GestureDetector(
+        child:new Text(title,
+          style:TextStyle(
+              // backgroundColor: Colors.redAccent,
+              fontSize: 12.0
+          )
+        ),
+        onTap: (){
+          if(member==null||!member.isNotEmpty){
+            Navigator.pushNamed(context, "/login");
+          }
+        },
+      );
+    }
+  }
+  class Jifen extends StatefulWidget {
+    @override
+    _Jifen createState()=> _Jifen();
+  }
+  class _Jifen extends State<Jifen>{
+    @override
+    
+    Widget build(BuildContext context) {
+      MemberModel member_model = Provider.of<MemberModel>(context);  
+      Map<String,dynamic> member =member_model.member;
+      if(member!=null&&member.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
+        member =new Map<String, dynamic>.from(member);
+      }
+      print("jifen $member");
+      // TODO: implement build
+      String jifen;
+      print("member ${member}");
+      if(member!=null&&member.length!=0&&member.isNotEmpty){
+        jifen=member["level"].toString();
+      }else{
+        jifen="";
+      }
+      return new Container(
+        child: Text(jifen,
+            style:TextStyle(
+                color: Colors.black,
+                fontSize: 10.0
+            )
+        )
+      );
+    }
+  }
