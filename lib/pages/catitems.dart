@@ -37,122 +37,125 @@ class _SideCatViewMenu extends State<SideCatViewMenu>{
           if(result.isNotEmpty){
             cat_list = result["itemcats"];
           }
-          return Row(
-            children: <Widget>[
-                new Container(
-                  width: _menuWidth,
-                  child:new ListView.builder(
-                    itemCount: cat_list.length,
-                    itemBuilder: (context, index){
-                      cat_list[index]= new Map<String, dynamic>.from(cat_list[index]);
-                      var str = cat_list[index]['name'];
-                      return  GestureDetector(
-                        onTap: (){
-                          setState((){
-                            _selectedIdx = index;
-                          });
-                        },
-                        child: Column(
-                          children:[
-                            Container(
-                              height:_menuHeight,
-                              color: (_selectedIdx == index)
-                            ? Colors.white 
-                            : HexColor("#F1F1F1"),
-                              child: Row(
-                                children: <Widget>[
-                                  Container(
-                                    width: 5,
-                                    height: _menuHeight,
-                                    color: (_selectedIdx == index)
-                                        ? HexColor("#40a9eb")
-                                        : HexColor("#F1F1F1"),
-                                  ),
-                                  Expanded(
-                                    child: Center(
-                                      child: Text(str),
+          if(cat_list!=null&&cat_list.length>0){
+            return Row(
+              children: <Widget>[
+                  new Container(
+                    width: _menuWidth,
+                    child:new ListView.builder(
+                      itemCount: cat_list.length,
+                      itemBuilder: (context, index){
+                        cat_list[index]= new Map<String, dynamic>.from(cat_list[index]);
+                        var str = cat_list[index]['name'];
+                        return  GestureDetector(
+                          onTap: (){
+                            setState((){
+                              _selectedIdx = index;
+                            });
+                          },
+                          child: Column(
+                            children:[
+                              Container(
+                                height:_menuHeight,
+                                color: (_selectedIdx == index)
+                              ? Colors.white 
+                              : HexColor("#F1F1F1"),
+                                child: Row(
+                                  children: <Widget>[
+                                    Container(
+                                      width: 5,
+                                      height: _menuHeight,
+                                      color: (_selectedIdx == index)
+                                          ? HexColor("#40a9eb")
+                                          : HexColor("#F1F1F1"),
                                     ),
-                                  )
-                                ],
-                              ),
-                            )
-                          ]
-                        ),
-                      );
-                      // return ListTile(
-                      //   title: new Text("${items[index]['name']}",style:TextStyle(backgroundColor:Colors.blue),),
-                      // );
-                    },
-                  )
-                ),
-                Expanded(
-                  child: Container(
-                    child: FutureBuilder(
-                      future: getCatItem(cat_list[_selectedIdx]['cid']),
-                      builder:(BuildContext context, AsyncSnapshot<dynamic> item_snapshot){
-                        Map<String,dynamic> item_pack_result=new Map<String, dynamic>.from(item_snapshot.data);
-                        if(item_pack_result.isNotEmpty){
-                          items = item_pack_result["items_pack"];
-                        }
-                        return new ListView.builder(
-                            itemCount: items.length,
-                            itemBuilder: (context, index){
-                              items[index]= new Map<String, dynamic>.from(items[index]);
-                              if(items[index]["item"]!=null){
-                              items[index]["item"]= new Map<String, dynamic>.from(items[index]["item"]);
-                              }
-                              if(items[index]['items']!=null){
-                                return GestureDetector(
-                                  child:new Container(
-                                    child:new Row(
-                                      children: [
-                                        new  Image.network(items[index]["items"]['img'],width: 60.0),
-                                        new Expanded(
-                                          flex:1,
-                                          child:new Padding(
-                                            padding: EdgeInsets.only(left:10.0,bottom:10.0,right:10.0),
-                                            child: new Column(
-                                              children:[
-                                                new Container(
-                                                  child: new Text(items[index]["items"]["title"],textAlign:TextAlign.left,overflow:TextOverflow.ellipsis,maxLines: 1,),
-                                                  alignment: Alignment.topLeft,
-                                                ),
-                                                new Container(
-                                                  child:new Text("¥"+items[index]["items"]["price"].toString(),style:TextStyle(color:HexColor("#ff0000"))),
-                                                  alignment: Alignment.topLeft,
-                                                )
-                                              ],
-                                              mainAxisAlignment:MainAxisAlignment.start,
-                                            ),
-                                          ) 
-                                        ),
-                                      ],
-                                    ),
-                                    height:60.0,
-                                    padding:EdgeInsets.only(bottom:10.0)
-                                  ),
-                                  onTap:(){
-                                    print("点击商品");
-                                    Navigator.pushNamed(context, "/goods/detail/index",arguments:{'item_id':items[index]['items']['item_id']});
-                                  },
-                                );
-                              }
-                              
-                            }
+                                    Expanded(
+                                      child: Center(
+                                        child: Text(str),
+                                      ),
+                                    )
+                                  ],
+                                ),
+                              )
+                            ]
+                          ),
                         );
-                      }
+                        // return ListTile(
+                        //   title: new Text("${items[index]['name']}",style:TextStyle(backgroundColor:Colors.blue),),
+                        // );
+                      },
                     )
-                    // color: Colors.blueGrey,
-                    // child: Center(
-                    //   child: Text(
-                    //     items[_selectedIdx]['name'],
-                    //     style: TextStyle(color: Colors.white),
-                    //   ),
-                    // ),
                   ),
-                )
-            ],
-          ) ;
+                  Expanded(
+                    child: Container(
+                      child: FutureBuilder(
+                        future: getCatItem(cat_list[_selectedIdx]['cid']),
+                        builder:(BuildContext context, AsyncSnapshot<dynamic> item_snapshot){
+                          Map<String,dynamic> item_pack_result=new Map<String, dynamic>.from(item_snapshot.data);
+                          if(item_pack_result.isNotEmpty){
+                            items = item_pack_result["items_pack"];
+                          }
+                          return new ListView.builder(
+                              itemCount: items.length,
+                              itemBuilder: (context, index){
+                                items[index]= new Map<String, dynamic>.from(items[index]);
+                                if(items[index]["item"]!=null){
+                                items[index]["item"]= new Map<String, dynamic>.from(items[index]["item"]);
+                                }
+                                if(items[index]['items']!=null){
+                                  return GestureDetector(
+                                    child:new Container(
+                                      child:new Row(
+                                        children: [
+                                          new  Image.network(items[index]["items"]['img'],width: 60.0),
+                                          new Expanded(
+                                            flex:1,
+                                            child:new Padding(
+                                              padding: EdgeInsets.only(left:10.0,bottom:10.0,right:10.0),
+                                              child: new Column(
+                                                children:[
+                                                  new Container(
+                                                    child: new Text(items[index]["items"]["title"],textAlign:TextAlign.left,overflow:TextOverflow.ellipsis,maxLines: 1,),
+                                                    alignment: Alignment.topLeft,
+                                                  ),
+                                                  new Container(
+                                                    child:new Text("¥"+items[index]["items"]["price"].toString(),style:TextStyle(color:HexColor("#ff0000"))),
+                                                    alignment: Alignment.topLeft,
+                                                  )
+                                                ],
+                                                mainAxisAlignment:MainAxisAlignment.start,
+                                              ),
+                                            ) 
+                                          ),
+                                        ],
+                                      ),
+                                      height:60.0,
+                                      padding:EdgeInsets.only(bottom:10.0)
+                                    ),
+                                    onTap:(){
+                                      print("点击商品");
+                                      Navigator.pushNamed(context, "/goods/detail/index",arguments:{'item_id':items[index]['items']['item_id']});
+                                    },
+                                  );
+                                }
+                                
+                              }
+                          );
+                        }
+                      )
+                      // color: Colors.blueGrey,
+                      // child: Center(
+                      //   child: Text(
+                      //     items[_selectedIdx]['name'],
+                      //     style: TextStyle(color: Colors.white),
+                      //   ),
+                      // ),
+                    ),
+                  )
+              ],
+            ) ;
+          }
+          
         } ,
         ) 
     );

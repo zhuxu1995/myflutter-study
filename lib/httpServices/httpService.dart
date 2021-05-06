@@ -144,12 +144,12 @@ class TokenInterceptor extends Interceptor{
       if (err.response != null && err.response.statusCode == 401) {
         print("401 .................");
         try{
-          MemberModel member_model = Provider.of<MemberModel>(context);  
-          Map<String,dynamic> member =member_model.member;
+           TokenStatus tokenStatus = Provider.of<TokenStatus>(context,listen: false);
+          var isTokenStatus=tokenStatus.isTokenGuoQi;
           print("|99999999999999");
-            print("isToken ${member_model}");
-            if(member==null||member==false){
-              Provider.of<TokenStatus>(context).setTokenGuoQi(true);
+            print("isToken ${isTokenStatus}");
+            if(isTokenStatus==null||isTokenStatus==false){
+              Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(true);
               Navigator.pushNamed(context, "/login");
             }
         }catch(e){
