@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_vant_kit/widgets/button.dart';
 import 'package:myappflutter/pages/catitems.dart';
 import 'package:myappflutter/pages/new_page.dart';
 import 'package:myappflutter/pages/login.dart';
@@ -16,7 +17,11 @@ class footTabBarNew extends State<footTabBar>{
   List<BottomNavigationBarItem> items= [
             BottomNavigationBarItem(icon: Icon(Icons.home),label: "首页"),
             BottomNavigationBarItem(icon: Icon(Icons.border_all),label: "分类"),
-            BottomNavigationBarItem(icon: Icon(Icons.search),label: "我的")
+            BottomNavigationBarItem(icon: Icon(Icons.search),label: "我的"),
+            // NButton(
+            //       text: "默认按钮",
+            //       onClick: () {},
+            //     ),
   ];
   void _onTapSelected(int index){
       setState((){

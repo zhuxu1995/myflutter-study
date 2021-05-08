@@ -36,16 +36,31 @@ class HttpService extends HttpServiceFu{
       return result;
     });
   }
+  itemOneGet(item_id) async{
+      var query = {
+          "query": {
+              "item_id": item_id
+          }
+      };
+      return itemGet(query).then((res) {
+          var item;
+          res =Map<String,dynamic>.from(res);
+          if (res['total_count']>=1) {
+              item = res['items_pack'][0]['items'];
+          }
+          return item;
+      });
+  }
+  itemGet(data)async {
+      return request("/public/itempack/get?_allow_anonymous=true", data);
+  }
   itemPack(data) async{
-    print("itemPack query${data}");
     return request("/rest/v1/itempack/get",data).then((result){
       return result;
     });
   }
   itemPackOne(itemId) async{
-    print("itempack one ${itemId}");
     return itemPack({"query":{"item_id":itemId}}).then((result){
-      print("itemPackOne result ${result}");
       return result;
     });
   }
@@ -116,6 +131,7 @@ class HttpService extends HttpServiceFu{
        } else {
          result = response.data;
        }
+      //  print("prin ${result}");
     }catch(e){
       print("http $e");
     }
