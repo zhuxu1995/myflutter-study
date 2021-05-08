@@ -1,8 +1,10 @@
 import 'dart:convert';
 
 import 'package:flutter/material.dart';
+import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/httpServices/httpService.dart';
 import 'package:myappflutter/httpServices/localStore.dart';
+import 'package:provider/provider.dart';
 class Login extends StatefulWidget {
   @override
   _LoginPage createState() => _LoginPage();
@@ -97,6 +99,7 @@ class _LoginPage extends State<Login> {
                                     httpservice.memberGet().then((member){
                                       if(member.isNotEmpty){
                                         dhflocalStore.setData("currentUserInfo",member);
+                                        Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(false);
                                         Navigator.of(context).pop();
                                       }
                                     });

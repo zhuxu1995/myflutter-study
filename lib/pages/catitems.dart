@@ -95,52 +95,54 @@ class _SideCatViewMenu extends State<SideCatViewMenu>{
                           if(item_pack_result.isNotEmpty){
                             items = item_pack_result["items_pack"];
                           }
-                          return new ListView.builder(
-                              itemCount: items.length,
-                              itemBuilder: (context, index){
-                                items[index]= new Map<String, dynamic>.from(items[index]);
-                                if(items[index]["item"]!=null){
-                                items[index]["item"]= new Map<String, dynamic>.from(items[index]["item"]);
-                                }
-                                if(items[index]['items']!=null){
-                                  return GestureDetector(
-                                    child:new Container(
-                                      child:new Row(
-                                        children: [
-                                          new  Image.network(items[index]["items"]['img'],width: 60.0),
-                                          new Expanded(
-                                            flex:1,
-                                            child:new Padding(
-                                              padding: EdgeInsets.only(left:10.0,bottom:10.0,right:10.0),
-                                              child: new Column(
-                                                children:[
-                                                  new Container(
-                                                    child: new Text(items[index]["items"]["title"],textAlign:TextAlign.left,overflow:TextOverflow.ellipsis,maxLines: 1,),
-                                                    alignment: Alignment.topLeft,
-                                                  ),
-                                                  new Container(
-                                                    child:new Text("¥"+items[index]["items"]["price"].toString(),style:TextStyle(color:HexColor("#ff0000"))),
-                                                    alignment: Alignment.topLeft,
-                                                  )
-                                                ],
-                                                mainAxisAlignment:MainAxisAlignment.start,
-                                              ),
-                                            ) 
-                                          ),
-                                        ],
+                          if(items.length>0){
+                            return new ListView.builder(
+                                itemCount: items.length,
+                                itemBuilder: (context, index){
+                                  items[index]= new Map<String, dynamic>.from(items[index]);
+                                  if(items[index]["item"]!=null){
+                                  items[index]["item"]= new Map<String, dynamic>.from(items[index]["item"]);
+                                  }
+                                  if(items[index]['items']!=null){
+                                    return GestureDetector(
+                                      child:new Container(
+                                        child:new Row(
+                                          children: [
+                                            new  Image.network(items[index]["items"]['img'],width: 60.0),
+                                            new Expanded(
+                                              flex:1,
+                                              child:new Padding(
+                                                padding: EdgeInsets.only(left:10.0,bottom:10.0,right:10.0),
+                                                child: new Column(
+                                                  children:[
+                                                    new Container(
+                                                      child: new Text(items[index]["items"]["title"],textAlign:TextAlign.left,overflow:TextOverflow.ellipsis,maxLines: 1,),
+                                                      alignment: Alignment.topLeft,
+                                                    ),
+                                                    new Container(
+                                                      child:new Text("¥"+items[index]["items"]["price"].toString(),style:TextStyle(color:HexColor("#ff0000"))),
+                                                      alignment: Alignment.topLeft,
+                                                    )
+                                                  ],
+                                                  mainAxisAlignment:MainAxisAlignment.start,
+                                                ),
+                                              ) 
+                                            ),
+                                          ],
+                                        ),
+                                        height:60.0,
+                                        padding:EdgeInsets.only(bottom:10.0)
                                       ),
-                                      height:60.0,
-                                      padding:EdgeInsets.only(bottom:10.0)
-                                    ),
-                                    onTap:(){
-                                      print("点击商品");
-                                      Navigator.pushNamed(context, "/goods/detail/index",arguments:{'item_id':items[index]['items']['item_id']});
-                                    },
-                                  );
+                                      onTap:(){
+                                        print("点击商品");
+                                        Navigator.pushNamed(context, "/goods/detail/index",arguments:{'item_id':items[index]['items']['item_id']});
+                                      },
+                                    );
+                                  }
+                                  
                                 }
-                                
-                              }
-                          );
+                            );
+                          }
                         }
                       )
                       // color: Colors.blueGrey,

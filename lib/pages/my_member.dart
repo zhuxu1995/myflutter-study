@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:myappflutter/httpServices/localStore.dart';
 import 'package:provider/provider.dart';
-import 'package:myappflutter/model/member.dart';
+import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/httpServices/httpService.dart';
 DhflocalStore dhflocalStore =new DhflocalStore();
  

@@ -2,7 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
 import 'package:myappflutter/component/footerTabBar.dart';
-import 'package:myappflutter/model/member.dart';
+import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/routes/routes.dart';
 import 'package:provider/provider.dart';
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();

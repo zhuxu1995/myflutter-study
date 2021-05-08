@@ -1,7 +1,11 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vant_kit/widgets/actionSheet.dart';
 import 'package:myappflutter/httpServices/httpService.dart';
+import 'package:myappflutter/model/item_pack.dart';
+import 'package:myappflutter/model/pub_item_pack.dart' show SKus;
 
 class Sku {
   var item_id,context;
@@ -24,31 +28,38 @@ class Sku {
     httpService.itemOneGet(itemId).then((data){
        //移除禁用的sku
           //跳过无效的sku和库存为0的sku
-          data =new Map<String, dynamic>.from(data);
-          print("data...... ${data}" );
-          print("data222...... ${data['skus']}" );
-          var vskus = [];
-          data['skus'].forEach((one) {
-            print("one ${one}");
-            one = Map<String,dynamic>.from(one);
-            if (one['status_id'] == 1 && one['sku_stocks'] > 0) {
+          print("data${json.encode(data)}");
+       
+          // data =new Map<String, dynamic>.from(data);
+          // print("data...... ${data}" );
+          // print("data222...... ${data['skus']}" );
+          List vskus = [];
+          data.skus.forEach((one) {
+            print("one ${json.encode(one)}");
+            // one = Map<String,dynamic>.from(one);
+            if (one.status_id == 1 && one.sku_stocks > 0) {
+              print("onetype ${one.runtimeType}");
+              // Map map1=Map<String,dynamic>.from(one);
+              // print("3333333333333333");
+              // Skus skus=Skus.fromJson(map1);
               vskus.add(one);
             }
           });
-          data['skus'] = vskus;
-
+          // var newjsonsku=Map<String,dynamic>.from(vskus);
+          data.skus = List<Skus>.from(vskus);
+          print("222222222222222");
           this.item_data = data;
-          //如果只有1个sku的话，默认选中
+          // //如果只有1个sku的话，默认选中
           print("item_data ${item_data}");
-          print("data type ${data.runtimeType}");
-          this.oneSkuDefaultSelected = (data['skus'].length == 1)  ;
-          var ttt = 0;
-          data['skus'].forEach( (one) {
-            ttt++;
+          // print("data type ${data.runtimeType}");
+          // this.oneSkuDefaultSelected = (data['skus'].length == 1)  ;
+          // var ttt = 0;
+          // data['skus'].forEach( (one) {
+          //   ttt++;
           //   // //console.log("sku---", one)
-            var kids = [];
+            // var kids = [];
 
-            var a = one['sku_properties'].split(";");
+            // var a = one['sku_properties'].split(";");
           //   // //console.log("aaaaaaa",a);
           //   a.forEach( (b) {
           //     if (!b) return;
@@ -84,7 +95,7 @@ class Sku {
           //     sku_id: one.sku_id
           //   };
           //   zsku.price = one.sku_price;
-          });
+          // });
           // // zsku.cd.detectChanges();
           // // console.log("初始化状态：", zsku.price);
           // zsku.initSKU();

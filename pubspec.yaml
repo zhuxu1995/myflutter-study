@@ -35,6 +35,8 @@ dependencies:
   provider: ^5.0.0
   shelf_proxy: ^1.0.0
   flutter_vant_kit: ^0.2.7
+  json_serializable: ^3.0.0
+  build_runner: ^1.6.1
 
 dev_dependencies:
   flutter_test:

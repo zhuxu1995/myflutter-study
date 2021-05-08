@@ -6,7 +6,9 @@ import 'package:flutter/services.dart' show rootBundle;
 import 'dart:io';
 import 'package:myappflutter/httpServices/localStore.dart';
 import 'package:myappflutter/main.dart';
-import 'package:myappflutter/model/member.dart';
+import 'package:myappflutter/globalData/member.dart';
+import 'package:myappflutter/model/item_pack.dart';
+import 'package:myappflutter/model/pub_item_pack.dart';
 import 'package:provider/provider.dart';
 DhflocalStore dhflocalStore =new DhflocalStore();
 class _Headers  {
@@ -44,10 +46,14 @@ class HttpService extends HttpServiceFu{
       };
       return itemGet(query).then((res) {
           var item;
-          res =Map<String,dynamic>.from(res);
-          if (res['total_count']>=1) {
-              item = res['items_pack'][0]['items'];
+          print("res${res.runtimeType}");
+          var result= new pubItemPack.fromJson(res);
+          // var res1 =new  itemPack.fromJson(res);
+          print("dd${result.total_count}");
+          if (result.total_count>=1) {
+              item = result.items_pack[0].items;
           }
+          print("dd${item.item_id}");
           return item;
       });
   }
@@ -56,11 +62,21 @@ class HttpService extends HttpServiceFu{
   }
   itemPack(data) async{
     return request("/rest/v1/itempack/get",data).then((result){
+       if(result.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
+          result =new Map<String, dynamic>.from(result);
+       }else if(result.runtimeType.toString().indexOf('_InternalLinkedHashMap')!=-1){
+          result =new Map<String, dynamic>.from(result);
+       }
       return result;
     });
   }
   itemPackOne(itemId) async{
     return itemPack({"query":{"item_id":itemId}}).then((result){
+       if(result.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
+          result =new Map<String, dynamic>.from(result);
+       }else if(result.runtimeType.toString().indexOf('_InternalLinkedHashMap')!=-1){
+          result =new Map<String, dynamic>.from(result);
+       }
       return result;
     });
   }
@@ -126,7 +142,9 @@ class HttpService extends HttpServiceFu{
       response = await  dio.post(url,data: data,options: options);
        if(response.data.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
           result =new Map<String, dynamic>.from(response.data);
+          // result=response.data;
        }else if(response.data.runtimeType.toString().indexOf('_InternalLinkedHashMap')!=-1){
+          // result=response.data;
           response.data =new Map<String, dynamic>.from(response.data);
        } else if(response.data.runtimeType.toString()=='String'){
         result =json.decode(response.data);
