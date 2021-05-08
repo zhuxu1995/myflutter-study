@@ -68,13 +68,16 @@ class HttpService extends HttpServiceFu{
     
     dio.interceptors.add(new TokenInterceptor());
     print("request入口");
-    // var config =await rootBundle.loadString('assets/config/config.json');
-    // print("config $config");
+    var config =await rootBundle.loadString('assets/config/config.json');
+    Map<String,dynamic>configJson= jsonDecode(config);
+    // config=json.decode(config);
+    print("config ${configJson.runtimeType}");
+    print("config ${configJson['api']}");
     if(url.indexOf("/public")!=-1){
       // url= "https://api.dhfapp.com"+url;
-       url= "https://devapi.96101210.com"+url;
+       url= configJson['api']+url;
     }else if(url.indexOf("/auth")!=-1){
-      url= "https://api2.dhfapp.com"+url;
+       url= configJson['api2']+url;
       //  url= "http://localhost:4040"+url;
     }else if(url.indexOf("/rest/v1")!=-1){
       // options["headers"]["Authorization"];
@@ -85,8 +88,7 @@ class HttpService extends HttpServiceFu{
         Navigator.pushNamed(context, "/login");
       }
       print("options2 ${_Headers.headersOb}");
-
-      url = "https://api.dhfapp.com"+url;
+        url= configJson['api']+url;
     }
     data= new Map<String, dynamic>.from(data);
     if(data['query']!=null&&data['query'].isNotEmpty){
