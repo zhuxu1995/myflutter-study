@@ -36,8 +36,6 @@ class _ItemInfo extends State<ItemInfo>{
     Map<String,dynamic> router_arguments=ModalRoute.of(context).settings.arguments;
     var item_id;
         return Scaffold(
-          appBar: AppBar(
-          ),
           body:getItemDetail(router_arguments['item_id'],(result){
             var item;
             print("result ${result['items_pack']}");
@@ -69,8 +67,7 @@ class _ItemInfo extends State<ItemInfo>{
               return Column(
                 children:[
                   Container(
-                    height:(height-140),
-                    color: Colors.redAccent,
+                    height:(height-60),
                     child:ListView(
                         children: [
                           AspectRatio(
@@ -120,22 +117,52 @@ class _ItemInfo extends State<ItemInfo>{
                                       colors: [Color(0xffffd01e), Color(0xffff8917)]),
                                   onClick: (){
                                     print("加入购物车");
-                                    new Sku(context).initItem(item['item_id']);
-                                    // ActionSheet(
-                                    //   child: Container(
-                                    //     height: 150,
-                                    //     padding: EdgeInsets.all(10),
-                                    //     alignment: AlignmentDirectional.topStart,
-                                    //     child: Text("data"),
-                                    //   ),
-                                    //   // title:"222",
-                                    //   closeIcon: Icons.highlight_off,
-                                    // ).show(context);
+                                    new Sku(context).initItem(item['item_id'],0);
                                   }       
                               ),
                               ButtonItem(
                                   text: "立即购买",
                                   color: LinearGradient(colors: [Color(0xffff6034), Color(0xffee0a24)]),
+                                  onClick: (){
+                                    new Sku(context).initItem(item['item_id'],1);
+                                      // ActionSheet(
+                                      //   child: Container(
+                                      //     height:600,
+                                      //     color: Colors.blue,
+                                      //   ),
+                                      //   round :false,
+                                      //   // title:"222",
+                                      //   closeIcon: Icons.highlight_off,
+                                      // ).show(context);
+                           
+                                    // showModalBottomSheet(
+                                    //   context: context,
+                                    //   builder: (context) {
+                                    //     return BottomSheet(
+                                    //       onClosing: (){},
+                                    //       builder: (context) {
+                                    //           return Container(
+                                    //             height: 6000,
+                                    //             color: Colors.amber,
+                                    //             child: Column(
+                                    //               children: <Widget>[
+                                    //                 ButtonBar(
+                                    //                   children: <Widget>[
+                                    //                     CloseButton()
+                                    //                   ],
+                                    //                 ),
+                                    //                 Text('这是BottomSheet'),
+                                    //                 Text('他没有遮罩层'),
+                                    //                 Text('也不会自动下去'),
+                                    //                 Text('使用时还需要 _scaffoldkey.currentState'),
+                                    //               ],
+                                    //             ),
+                                    //           );
+                                    //       },
+                                    //     );
+                                    //   }
+                                    // ); 
+                                  }
                               ),
                                   
                             ],

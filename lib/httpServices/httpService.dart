@@ -23,7 +23,12 @@ class HttpService extends HttpServiceFu{
   Dio dio =  Dio();
   
   // ignore: empty_constructor_bodies
-  
+  previewOrder(data) async{
+    if(data["buy_para"].isNotEmpty){
+      data["buy_para"] =jsonEncode(data["buy_para"]);
+    }
+    return request("/rest/v1/order/preview/add", data);
+  }
   catGet(data) async{
     return request("/public/category/get", data);
   }
@@ -46,14 +51,11 @@ class HttpService extends HttpServiceFu{
       };
       return itemGet(query).then((res) {
           var item;
-          print("res${res.runtimeType}");
           var result= new pubItemPack.fromJson(res);
           // var res1 =new  itemPack.fromJson(res);
-          print("dd${result.total_count}");
           if (result.total_count>=1) {
               item = result.items_pack[0].items;
           }
-          print("dd${item.item_id}");
           return item;
       });
   }
@@ -83,9 +85,23 @@ class HttpService extends HttpServiceFu{
   request(String url,data) async {
     
     dio.interceptors.add(new TokenInterceptor());
+    // var config ;
+    Map<String,dynamic>configJson;
+   
+    try{
+      // Future<String> loadConfigJson() async {
+      //   return rootBundle.loadString('assets/config/config.json');
+      // }
+      // configJson =jsonDecode(await loadConfigJson());
+      configJson= {
+          "api":"https://api.dhfapp.com",
+          "api2":"https://api2.dhfapp.com",
+          "php":"https://api2.dhfapp.com/api2/rest"
+      };
+    }catch(e){
+
+    }
     print("request入口");
-    var config =await rootBundle.loadString('assets/config/config.json');
-    Map<String,dynamic>configJson= jsonDecode(config);
     // config=json.decode(config);
     print("config ${configJson.runtimeType}");
     print("config ${configJson['api']}");
@@ -97,7 +113,6 @@ class HttpService extends HttpServiceFu{
       //  url= "http://localhost:4040"+url;
     }else if(url.indexOf("/rest/v1")!=-1){
       // options["headers"]["Authorization"];
-      
       _Headers.headersOb["Authorization"] =await dhflocalStore.getToken();
       if(_Headers.headersOb["Authorization"]==null){
         BuildContext context = navigatorKey.currentState.overlay.context;  
@@ -109,7 +124,8 @@ class HttpService extends HttpServiceFu{
     data= new Map<String, dynamic>.from(data);
     if(data['query']!=null&&data['query'].isNotEmpty){
        var queryTmp = [];
-       print("data ${data.runtimeType}");
+       print("data22 ${ data['query']}");
+       print("data33 ${ data['query'].runtimeType}");
        data['query'].forEach((key,val){
          var str=key + ":" + val.toString();
          queryTmp.add(str);
@@ -123,20 +139,6 @@ class HttpService extends HttpServiceFu{
     Options options = Options(headers:_Headers.headersOb,responseType: ResponseType.json,contentType: "application/x-www-form-urlencoded; charset=UTF-8");
     var result;
     var response ;
-    // (dio.httpClientAdapter as DefaultHttpClientAdapter).onHttpClientCreate = (client) {
-    //   print("2233");
-    //   print("client $client");
-    //   // config the http client
-    //   client.findProxy = (uri) {
-    //     //proxy all request to localhost:8888
-    //     return 'PROXY localhost:8888';
-    //   };
-    //   client.badCertificateCallback =
-    //     (X509Certificate cert, String host, int port) => true;
-    //   // you can also create a HttpClient to dio
-    //   // return HttpClient();
-    // };
-
     try{
       print("data ${data}");
       response = await  dio.post(url,data: data,options: options);

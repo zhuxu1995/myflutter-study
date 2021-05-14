@@ -4,6 +4,7 @@ import 'package:myappflutter/pages/login.dart';
 import 'package:myappflutter/pages/my_member.dart';
 import 'package:myappflutter/pages/new_page.dart';
 import 'package:myappflutter/main.dart';
+import 'package:myappflutter/pages/order/confirm.dart';
 class MyRoutes{
   static List get routes_list => [
     {
@@ -11,6 +12,7 @@ class MyRoutes{
       "route":{
         "/login":(context) => Login(),
         "/goods/detail/index":(context)=>ItemInfo(),
+        "/order/confirm/index":(context)=>ConfirmOrder(),
       }
     },
   ];

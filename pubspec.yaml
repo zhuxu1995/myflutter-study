@@ -37,6 +37,7 @@ dependencies:
   flutter_vant_kit: ^0.2.7
   json_serializable: ^3.0.0
   build_runner: ^1.6.1
+  weui: ^0.0.8
 
 dev_dependencies:
   flutter_test:

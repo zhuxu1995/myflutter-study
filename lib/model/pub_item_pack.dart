@@ -240,12 +240,18 @@ part 'pub_item_pack.g.dart';
   @JsonKey(name: 'xian_gou')
   int xian_gou;
 
-  Skus(this.partner_id,this.store_id,this.sku_id,this.item_id,this.imgurl,this.barcode,this.sku_outer_id,this.sku_properties,this.sku_price,this.sku_stocks,this.status_id,this.tax_rate,this.xian_gou,);
+  Skus([this.partner_id,this.store_id,this.sku_id,this.item_id,this.imgurl,this.barcode,this.sku_outer_id,this.sku_properties,this.sku_price,this.sku_stocks,this.status_id,this.tax_rate,this.xian_gou,]);
 
   factory Skus.fromJson(Map<String, dynamic> srcJson) => _$SkusFromJson(srcJson);
 
   Map<String, dynamic> toJson() => _$SkusToJson(this);
 
+  get getSkuid{
+    if(this.sku_id==null||this.sku_id.isEmpty){
+      return false;
+    }
+    return sku_id;
+  }
 }
 
   
