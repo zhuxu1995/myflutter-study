@@ -22,6 +22,9 @@ class HttpService extends HttpServiceFu{
   BuildContext context;
   Dio dio =  Dio();
   
+  addressGet(data) async{
+    return request("/rest/v1/address/get", data);
+  }
   // ignore: empty_constructor_bodies
   previewOrder(data) async{
     if(data["buy_para"].isNotEmpty){
@@ -89,15 +92,11 @@ class HttpService extends HttpServiceFu{
     Map<String,dynamic>configJson;
    
     try{
-      // Future<String> loadConfigJson() async {
-      //   return rootBundle.loadString('assets/config/config.json');
-      // }
-      // configJson =jsonDecode(await loadConfigJson());
-      configJson= {
-          "api":"https://api.dhfapp.com",
-          "api2":"https://api2.dhfapp.com",
-          "php":"https://api2.dhfapp.com/api2/rest"
-      };
+      Future<String> loadConfigJson() async {
+        return rootBundle.loadString('assets/config/config.json');
+      }
+      configJson =jsonDecode(await loadConfigJson());
+     
     }catch(e){
 
     }
