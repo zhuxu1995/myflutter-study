@@ -25,10 +25,14 @@ class HttpService extends HttpServiceFu{
   addressGet(data) async{
     return request("/rest/v1/address/get", data);
   }
+  //下单
+  confirmOrder(data) {
+        return request("/rest/v1/order/confirm/add", data);
+  }
   // ignore: empty_constructor_bodies
   previewOrder(data) async{
-    if(data["buy_para"].isNotEmpty){
-      data["buy_para"] =jsonEncode(data["buy_para"]);
+    if(data["buy_para"].isNotEmpty&&data['buy_para'].runtimeType.toString()!='String'){
+        data["buy_para"] =jsonEncode(data["buy_para"]);
     }
     return request("/rest/v1/order/preview/add", data);
   }
@@ -85,7 +89,32 @@ class HttpService extends HttpServiceFu{
       return result;
     });
   }
-  request(String url,data) async {
+  formDataUpdate(data) {
+        return this.requestPhpApi2("dhf.customform.formupdate", data, 600);
+  }
+  formDataAdd(data) {
+        return this.requestPhpApi2("dhf.customform.formadd", data, 600);
+  }
+  formGet(data) async{
+        return  requestPhpApi2("dhf.customform.formget", data, 600);
+  }
+  requestPhpApi2(
+      String  method,
+        content,
+        ttl,
+        {isnotToken}
+    ) async{
+        var data = { "method": method, "content": content };
+        if (data["content"]!=null&&data["content"].runtimeType.toString()!='String') {
+            data["content"] = jsonEncode(content);
+        }
+        var path = "/api2/rest/";
+        // if (isnotToken.isEmpty) {
+        //     // path += "?_allow_anonymous=true";
+        // }
+        return request(path, data, ttl:ttl);
+  }
+  request(String url,data,{int ttl=0}) async {
     
     dio.interceptors.add(new TokenInterceptor());
     // var config ;
@@ -100,31 +129,37 @@ class HttpService extends HttpServiceFu{
     }catch(e){
 
     }
-    print("request入口");
+    // print("request入口");
     // config=json.decode(config);
-    print("config ${configJson.runtimeType}");
-    print("config ${configJson['api']}");
+    // print("config ${configJson.runtimeType}");
+    // print("config ${configJson['api']}");
     if(url.indexOf("/public")!=-1){
       // url= "https://api.dhfapp.com"+url;
        url= configJson['api']+url;
     }else if(url.indexOf("/auth")!=-1){
        url= configJson['api2']+url;
       //  url= "http://localhost:4040"+url;
-    }else if(url.indexOf("/rest/v1")!=-1){
+    }else if(url.indexOf("/rest/v1")!=-1|| url.indexOf('/api2') != -1){
       // options["headers"]["Authorization"];
       _Headers.headersOb["Authorization"] =await dhflocalStore.getToken();
       if(_Headers.headersOb["Authorization"]==null){
         BuildContext context = navigatorKey.currentState.overlay.context;  
         Navigator.pushNamed(context, "/login");
       }
-      print("options2 ${_Headers.headersOb}");
-        url= configJson['api']+url;
+      // print("options2 ${_Headers.headersOb}");
+      if(url.indexOf("/rest/v1")!=-1){
+                url= configJson['api']+url;
+
+            }else{
+                url= configJson['api2']+url;
+            }
+        
     }
     data= new Map<String, dynamic>.from(data);
     if(data['query']!=null&&data['query'].isNotEmpty){
        var queryTmp = [];
-       print("data22 ${ data['query']}");
-       print("data33 ${ data['query'].runtimeType}");
+      //  print("data22 ${ data['query']}");
+      //  print("data33 ${ data['query'].runtimeType}");
        data['query'].forEach((key,val){
          var str=key + ":" + val.toString();
          queryTmp.add(str);
@@ -154,7 +189,7 @@ class HttpService extends HttpServiceFu{
        }
       //  print("prin ${result}");
     }catch(e){
-      print("http $e");
+      // print("http $e");
     }
     return result;
   }
@@ -177,20 +212,19 @@ class TokenInterceptor extends Interceptor{
   @override
   Future onError(DioError err, ErrorInterceptorHandler handler) {
     try{
-      print("eer ${err}");
+      // print("eer ${err}");
       if (err.response != null && err.response.statusCode == 401) {
-        print("401 .................");
         try{
            TokenStatus tokenStatus = Provider.of<TokenStatus>(context,listen: false);
           var isTokenStatus=tokenStatus.isTokenGuoQi;
-          print("|99999999999999");
-            print("isToken ${isTokenStatus}");
+          // print("|99999999999999");
+            // print("isToken ${isTokenStatus}");
             if(isTokenStatus==null||isTokenStatus==false){
               Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(true);
               Navigator.pushNamed(context, "/login");
             }
         }catch(e){
-          print("MemberModel ${e}");
+          // print("MemberModel ${e}");
         }
         
         // TokenStatus tokenStatus = Provider.of<TokenStatus>(context);

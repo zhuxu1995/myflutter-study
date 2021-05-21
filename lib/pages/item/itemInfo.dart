@@ -38,15 +38,15 @@ class _ItemInfo extends State<ItemInfo>{
         return Scaffold(
           body:getItemDetail(router_arguments['item_id'],(result){
             var item;
-            print("result ${result['items_pack']}");
+            // print("result ${result['items_pack']}");
             if(result['items_pack'].length>0){
               item=List.from(result['items_pack'])[0]['items'];
             }
-            print("iteminfo ${item}");
+            // print("iteminfo ${item}");
             if(item!=null&&item['item_id']!=null){
               List <Image> images=[];
               if(item['img']!=null){
-                print("img ${item['img']}");
+                // print("img ${item['img']}");
                 images.add(Image.network(item['img'],fit: BoxFit.fitWidth));
               }
               if(item['img1']!=null&&item['img1']!=''){
