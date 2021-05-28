@@ -4,7 +4,7 @@ part 'areasmodel.g.dart';
 
 
 @JsonSerializable()
-  class areasmodel extends Object{
+  class Areasmodel extends Object{
 
   @JsonKey(name: 'total_count')
   int totalCount;
@@ -12,9 +12,9 @@ part 'areasmodel.g.dart';
   @JsonKey(name: 'areas')
   List<Areas> areas;
 
-  areasmodel(this.totalCount,this.areas,);
+  Areasmodel(this.totalCount,this.areas,);
 
-  factory areasmodel.fromJson(Map<String, dynamic> srcJson) => _$areasmodelFromJson(srcJson);
+  factory Areasmodel.fromJson(Map<String, dynamic> srcJson) => _$areasmodelFromJson(srcJson);
 
 }
 

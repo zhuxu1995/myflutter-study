@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_vant_kit/widgets/addressList.dart';
+import 'package:myappflutter/helper/Tools.dart';
 import 'package:myappflutter/httpServices/httpService.dart';
 import 'package:myappflutter/model/address/address.dart';
 class AddressListPage extends StatelessWidget{
@@ -11,7 +12,7 @@ class AddressListPage extends StatelessWidget{
       appBar: AppBar(
         title: Text("收货地址"),
       ),
-      body: AddressGetPage()
+      body:new AddressGetPage()
     );
   }
 }
@@ -33,6 +34,8 @@ class _AddressGetPage extends State<AddressGetPage>{
   }
   @override
   Widget build(BuildContext context) {
+     Map<String,dynamic> router_arguments=ModalRoute.of(context).settings.arguments;
+    print("router_arguments ${router_arguments.toString()}");
     print("列表实例页");
     // TODO: implement build
     if(address_list==null){
@@ -43,6 +46,7 @@ class _AddressGetPage extends State<AddressGetPage>{
     }
     return new Container(
         child:new AddressList(
+          key:ValueKey(DhfTools.currentTimeMillis().toString()),
           switchable: true,
           list: [
             if(address_list!=null&&address_list.deliver_addrs.isNotEmpty)
@@ -63,14 +67,22 @@ class _AddressGetPage extends State<AddressGetPage>{
           onSelect: (selectAddressInfo ,index){
             var info= selectAddressInfo as AddressInfoId;//类型转换
             print("选择地址id ${info.addressId}");
+            Navigator.pop(context,info.addressId);
           },
           onEdit: (edAddressInfo,int index){
             var info= edAddressInfo as AddressInfoId;//类型转换
             print("选择地址id ${info.addressId}");
+            Navigator.pushNamed(context, "/address/add/index",arguments:{"address_id":info.addressId}).then((addResult){
+              print("修改收货地址结果${addResult.toString()}");
+              addressGet();
+            });
           },
           onAdd: (){
             print("进入创建地址页");
-             Navigator.pushNamed(context, "/address/add/index");
+            Navigator.pushNamed(context, "/address/add/index").then((addResult){
+              print("创建收货地址结果${addResult.toString()}");
+              addressGet();
+            });
           },
         ),
     );

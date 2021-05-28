@@ -118,9 +118,16 @@ class _ConfirmOrder extends State<ConfirmOrder>{
       },
     );
   }
+  var address_id;
   previewOrderAdd(previewQuery,pageContext) {
+    var addressQuery={};
+    if(address_id!=null){
+      addressQuery["query"]={
+        "address_id":address_id
+      };
+    }
     return new FutureBuilder(
-      future: httpService.addressGet({}),
+      future: httpService.addressGet(addressQuery),
       // ignore: await_only_futures
       builder:  (BuildContext context, AsyncSnapshot<dynamic> address_asyncSnapshot) {
           final height = MediaQuery.of(context).size.height;
@@ -190,11 +197,13 @@ class _ConfirmOrder extends State<ConfirmOrder>{
                                   children: <Widget>[
                                     if(addressObj!=null)
                                       Container(
+                                        key:ValueKey(addressObj.address_id),
                                         child:InkWell(
                                           onTap: (){
                                             Navigator.pushNamed(context, "/address/list/index");
                                           },
                                           child: new AddressShow(
+                                            key:ValueKey(addressObj.address_id),
                                             switchable:false,
                                             list:[
                                               new AddressInfo(
@@ -207,8 +216,11 @@ class _ConfirmOrder extends State<ConfirmOrder>{
                                               isDefault: false),
                                             ],
                                             onClick:(){
-                                              print("#33333333");
-                                              Navigator.pushNamed(context, "/address/list/index");
+                                              Navigator.pushNamed(context, "/address/list/index").then(( addressInfo1){
+                                                setState(() {
+                                                  address_id=addressInfo1;
+                                                });
+                                              });
                                             }
                                           ),
                                         )

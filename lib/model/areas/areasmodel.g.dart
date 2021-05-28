@@ -6,8 +6,8 @@ part of 'areasmodel.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-areasmodel _$areasmodelFromJson(Map<String, dynamic> json) {
-  return areasmodel(
+Areasmodel _$areasmodelFromJson(Map<String, dynamic> json) {
+  return Areasmodel(
     json['total_count'] as int,
     (json['areas'] as List)
         ?.map(
@@ -16,7 +16,7 @@ areasmodel _$areasmodelFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$areasmodelToJson(areasmodel instance) =>
+Map<String, dynamic> _$areasmodelToJson(Areasmodel instance) =>
     <String, dynamic>{
       'total_count': instance.totalCount,
       'areas': instance.areas,

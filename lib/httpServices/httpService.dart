@@ -22,8 +22,25 @@ class HttpService extends HttpServiceFu{
   BuildContext context;
   Dio dio =  Dio();
   
+  //省市区查询
+  areaGet(data) {
+      return request('/public/area/get', data);
+  }
+  //收货地址查询
   addressGet(data) async{
     return request("/rest/v1/address/get", data);
+  }
+  //收货地址查询
+  addressAdd(data) async{
+    if(data.isNotEmpty&&data.runtimeType.toString()!='String'){
+      // data=jsonEncode(data);
+    }
+    return request("/rest/v1/address/add", data);
+  }
+  //修改售后地址
+  addressUpdate(data) {
+        data = data ?? {};
+        return request("/rest/v1/address/update", data);
   }
   //下单
   confirmOrder(data) {
@@ -155,8 +172,10 @@ class HttpService extends HttpServiceFu{
             }
         
     }
-    data= new Map<String, dynamic>.from(data);
-    if(data['query']!=null&&data['query'].isNotEmpty){
+    if(data.runtimeType.toString()!="String"){
+     data= new Map<String, dynamic>.from(data);
+    }
+    if(data.runtimeType.toString()!="String"&&data['query']!=null&&data['query'].isNotEmpty){
        var queryTmp = [];
       //  print("data22 ${ data['query']}");
       //  print("data33 ${ data['query'].runtimeType}");

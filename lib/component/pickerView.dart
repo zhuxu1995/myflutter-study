@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_vant_kit/widgets/picker.dart';
 // import '../theme/index.dart';
 
 typedef void OnChange(List<String> value);
@@ -13,7 +14,7 @@ class  WePickerView extends StatefulWidget {
     itemCount = 5,
     this.itemHeight = 42,
     this.onChange,
-    @required this.options
+    @required this.options, List<PickerItem> optoins
   }) : assert(itemCount % 2 == 1), this.itemCount = itemCount;
 
   @override

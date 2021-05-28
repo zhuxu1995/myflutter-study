@@ -76,7 +76,7 @@ part 'address.g.dart';
   Deliver_addrs(this.address_id,this.member_id,this.country,this.province,this.city,this.district,this.address,this.email,this.city_id,this.district_id,this.post_code,this.longitude,this.latitude,this.real_name,this.phone,this.mobile,this.is_default,);
 
   factory Deliver_addrs.fromJson(Map<String, dynamic> srcJson) => _$Deliver_addrsFromJson(srcJson);
-
+  Map<String,dynamic> toJson()=> _$Deliver_addrsToJson(this);
 }
 
   
