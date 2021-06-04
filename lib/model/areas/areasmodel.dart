@@ -14,7 +14,7 @@ part 'areasmodel.g.dart';
 
   Areasmodel(this.totalCount,this.areas,);
 
-  factory Areasmodel.fromJson(Map<String, dynamic> srcJson) => _$areasmodelFromJson(srcJson);
+  factory Areasmodel.fromJson(Map<String, dynamic> srcJson) => _$AreasmodelFromJson(srcJson);
 
 }
 
