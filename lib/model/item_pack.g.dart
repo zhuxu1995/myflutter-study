@@ -45,10 +45,10 @@ Items _$ItemsFromJson(Map<String, dynamic> json) {
     json['img8'] as String,
     json['img9'] as String,
     json['cost'] as int,
-    json['price'] as int,
-    json['maket_price'] as int,
-    json['prom_price'] as int,
-    json['packing_fee'] as int,
+    (json['price'] as num)?.toDouble(),
+    (json['maket_price'] as num)?.toDouble(),
+    (json['prom_price'] as num)?.toDouble(),
+    (json['packing_fee'] as num)?.toDouble(),
     json['apply_subs'] as String,
     json['limit_pay'] as String,
     json['note'] as String,
@@ -129,6 +129,7 @@ Map<String, dynamic> _$ItemsToJson(Items instance) => <String, dynamic>{
     };
 
 Skus _$SkusFromJson(Map<String, dynamic> json) {
+  print("1${json['sku_stocks'].runtimeType}");
   return Skus(
     json['partner_id'] as int,
     json['store_id'] as int,
@@ -138,10 +139,10 @@ Skus _$SkusFromJson(Map<String, dynamic> json) {
     json['barcode'] as String,
     json['sku_outer_id'] as String,
     json['sku_properties'] as String,
-    json['sku_price'] as int,
+    (json['sku_price'] as num)?.toDouble(),
     json['sku_stocks'] as int,
     json['status_id'] as int,
-    json['tax_rate'] as int,
+    (json['tax_rate'] as num)?.toDouble(),
     json['xian_gou'] as int,
   );
 }

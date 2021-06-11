@@ -9,8 +9,6 @@ final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 void main() {
   Map<String, WidgetBuilder> routes = new Map<String, WidgetBuilder>();
   MyRoutes.routes_list.forEach((val) => routes.addAll(val['route']));
-  
-  print("route $routes");
   runApp(
     MultiProvider(
       providers: [
@@ -36,10 +34,13 @@ class MyApp extends StatefulWidget {
 }
 class TutorialHome extends State<MyApp> {
     int _selectedIndex = 0;
+    static BuildContext appContext;
+
     @visibleForTesting
     
     @override
     Widget build(BuildContext context) {
+      appContext=context;
       //Scaffold是Material中主要的布局组件.
       return new footTabBar();
     }

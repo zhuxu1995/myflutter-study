@@ -14,9 +14,9 @@ part 'cat.g.dart';
 
   Cat(this.totalCount,this.itemcats,);
 
-  factory Cat.fromJson(Map<String, dynamic> srcJson) => _$catFromJson(srcJson);
+  factory Cat.fromJson(Map<String, dynamic> srcJson) => _$CatFromJson(srcJson);
 
-  Map<String, dynamic> toJson() => _$catToJson(this);
+  Map<String, dynamic> toJson() => _$CatToJson(this);
 
 }
 

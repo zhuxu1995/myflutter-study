@@ -112,16 +112,16 @@ part 'pub_item_pack.g.dart';
   int cost;
 
   @JsonKey(name: 'price')
-  int price;
+  double price;
 
   @JsonKey(name: 'maket_price')
-  int maket_price;
+  double maket_price;
 
   @JsonKey(name: 'prom_price')
   double prom_price;
 
   @JsonKey(name: 'packing_fee')
-  int packing_fee;
+  double packing_fee;
 
   @JsonKey(name: 'apply_subs')
   String apply_subs;
@@ -151,7 +151,7 @@ part 'pub_item_pack.g.dart';
   int fare_id;
 
   @JsonKey(name: 'weight')
-  int weight;
+  double weight;
 
   @JsonKey(name: 'stock_num')
   int stock_num;
@@ -226,7 +226,7 @@ part 'pub_item_pack.g.dart';
   String sku_properties;
 
   @JsonKey(name: 'sku_price')
-  int sku_price;
+  double sku_price;
 
   @JsonKey(name: 'sku_stocks')
   int sku_stocks;
@@ -235,7 +235,7 @@ part 'pub_item_pack.g.dart';
   int status_id;
 
   @JsonKey(name: 'tax_rate')
-  int tax_rate;
+  double tax_rate;
 
   @JsonKey(name: 'xian_gou')
   int xian_gou;

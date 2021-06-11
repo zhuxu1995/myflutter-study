@@ -55,7 +55,7 @@ class Goods {
 
 class SkuModel {
   String img;
-  int price;
+  double price;
   int count;
   String sku;
   String sku_id;

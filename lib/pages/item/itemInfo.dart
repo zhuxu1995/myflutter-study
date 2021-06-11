@@ -125,43 +125,6 @@ class _ItemInfo extends State<ItemInfo>{
                                   color: LinearGradient(colors: [Color(0xffff6034), Color(0xffee0a24)]),
                                   onClick: (){
                                     new Sku(context).initItem(item['item_id'],1);
-                                      // ActionSheet(
-                                      //   child: Container(
-                                      //     height:600,
-                                      //     color: Colors.blue,
-                                      //   ),
-                                      //   round :false,
-                                      //   // title:"222",
-                                      //   closeIcon: Icons.highlight_off,
-                                      // ).show(context);
-                           
-                                    // showModalBottomSheet(
-                                    //   context: context,
-                                    //   builder: (context) {
-                                    //     return BottomSheet(
-                                    //       onClosing: (){},
-                                    //       builder: (context) {
-                                    //           return Container(
-                                    //             height: 6000,
-                                    //             color: Colors.amber,
-                                    //             child: Column(
-                                    //               children: <Widget>[
-                                    //                 ButtonBar(
-                                    //                   children: <Widget>[
-                                    //                     CloseButton()
-                                    //                   ],
-                                    //                 ),
-                                    //                 Text('这是BottomSheet'),
-                                    //                 Text('他没有遮罩层'),
-                                    //                 Text('也不会自动下去'),
-                                    //                 Text('使用时还需要 _scaffoldkey.currentState'),
-                                    //               ],
-                                    //             ),
-                                    //           );
-                                    //       },
-                                    //     );
-                                    //   }
-                                    // ); 
                                   }
                               ),
                                   

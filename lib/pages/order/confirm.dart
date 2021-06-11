@@ -312,7 +312,6 @@ class _ConfirmOrder extends State<ConfirmOrder>{
     // print("skus ....${orderSkusPro.skusQuery}");
     Map<String,dynamic> router_arguments=ModalRoute.of(context).settings.arguments;
     var previewOrderQuery={};
-    print("router_arguments 11111111111111111${router_arguments.toString()}");
     // List sd=[];
     // sd.isNotEmpty
     var buy_para=[];

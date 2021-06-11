@@ -8,7 +8,9 @@ class MemberModel with ChangeNotifier{
     this.member = val;
     //通知
     // notifyListeners();
-
+  }
+  getMember(){
+    return member;
   }
 }
 class TokenStatus with ChangeNotifier{

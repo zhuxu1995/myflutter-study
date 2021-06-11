@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/httpServices/httpService.dart';
 import 'package:myappflutter/httpServices/localStore.dart';
+import 'package:myappflutter/model/member/member_value.dart';
 import 'package:provider/provider.dart';
 class Login extends StatefulWidget {
   @override
@@ -98,9 +99,12 @@ class _LoginPage extends State<Login> {
                                     dhflocalStore.setToken(result['token']);
                                     httpservice.memberGet().then((member){
                                       if(member.isNotEmpty){
+                                        var memberObj=memberValue.fromJson(member);
+                                        dhflocalStore.setNameSpace(memberObj.memberId);
                                         dhflocalStore.setData("currentUserInfo",member);
+                                        
                                         Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(false);
-                                        Navigator.of(context).pop();
+                                        Navigator.of(context).pop(member);
                                       }
                                     });
                                     // dynamic token =dhflocalStore.getToken();

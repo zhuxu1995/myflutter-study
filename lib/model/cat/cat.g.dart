@@ -6,7 +6,7 @@ part of 'cat.dart';
 // JsonSerializableGenerator
 // **************************************************************************
 
-Cat _$catFromJson(Map<String, dynamic> json) {
+Cat _$CatFromJson(Map<String, dynamic> json) {
   return Cat(
     json['total_count'] as int,
     (json['itemcats'] as List)
@@ -16,7 +16,7 @@ Cat _$catFromJson(Map<String, dynamic> json) {
   );
 }
 
-Map<String, dynamic> _$catToJson(Cat instance) => <String, dynamic>{
+Map<String, dynamic> _$CatToJson(Cat instance) => <String, dynamic>{
       'total_count': instance.totalCount,
       'itemcats': instance.itemcats,
     };

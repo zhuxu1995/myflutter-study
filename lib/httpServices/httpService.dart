@@ -8,8 +8,10 @@ import 'package:myappflutter/httpServices/localStore.dart';
 import 'package:myappflutter/main.dart';
 import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/model/item_pack.dart';
+import 'package:myappflutter/model/member/member_value.dart';
 import 'package:myappflutter/model/pub_item_pack.dart';
 import 'package:provider/provider.dart';
+import 'package:dio_http_cache_extended/dio_http_cache_extended.dart';
 DhflocalStore dhflocalStore =new DhflocalStore();
 class _Headers  {
   static Map <String,dynamic> headersOb={HttpHeaders.acceptHeader:"accept: application/json, text/plain, */*"};
@@ -134,6 +136,7 @@ class HttpService extends HttpServiceFu{
   request(String url,data,{int ttl=0}) async {
     
     dio.interceptors.add(new TokenInterceptor());
+    dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: "http://www.google.cn")).interceptor);
     // var config ;
     Map<String,dynamic>configJson;
    
@@ -157,13 +160,15 @@ class HttpService extends HttpServiceFu{
        url= configJson['api2']+url;
       //  url= "http://localhost:4040"+url;
     }else if(url.indexOf("/rest/v1")!=-1|| url.indexOf('/api2') != -1){
-      // options["headers"]["Authorization"];
-      _Headers.headersOb["Authorization"] =await dhflocalStore.getToken();
-      if(_Headers.headersOb["Authorization"]==null){
+      var token =await dhflocalStore.getToken();
+      print("2222222");
+      if(token==null){
         BuildContext context = navigatorKey.currentState.overlay.context;  
         Navigator.pushNamed(context, "/login");
+      }else{
+        _Headers.headersOb["Authorization"]=token;
       }
-      // print("options2 ${_Headers.headersOb}");
+      print("options2 ${_Headers.headersOb}");
       if(url.indexOf("/rest/v1")!=-1){
                 url= configJson['api']+url;
 
@@ -228,30 +233,41 @@ class TokenInterceptor extends Interceptor{
       
   //   }
   // }
+  
   @override
-  Future onError(DioError err, ErrorInterceptorHandler handler) {
+  Future onRequest(RequestOptions options) async{
+    try{
+
+      super.onRequest(options);
+    }catch(e){
+      
+    }
+  }
+  Future onError(DioError err) async{
     try{
       // print("eer ${err}");
       if (err.response != null && err.response.statusCode == 401) {
-        try{
            TokenStatus tokenStatus = Provider.of<TokenStatus>(context,listen: false);
           var isTokenStatus=tokenStatus.isTokenGuoQi;
-          // print("|99999999999999");
-            // print("isToken ${isTokenStatus}");
             if(isTokenStatus==null||isTokenStatus==false){
               Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(true);
-              Navigator.pushNamed(context, "/login");
+              Navigator.pushNamed(context, "/login").then((member){
+                if(member!=null){
+                  var curMember= memberValue.fromJson(member);
+                  Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(false);
+                }else{
+                  Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(false);
+                }
+              });
             }
-        }catch(e){
-          // print("MemberModel ${e}");
-        }
+        
         
         // TokenStatus tokenStatus = Provider.of<TokenStatus>(context);
         // var isTokenStatus=tokenStatus.isTokenGuoQi;
-        
+        // print("|4444444444 ${err}");
         // 
-        // 
-        super.onError(err,handler);
+        super.onError(err);
+        return err;
       }
     }catch(e){
 

@@ -1,10 +1,14 @@
 import 'package:flutter/material.dart';
+import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/httpServices/localStore.dart';
+import 'package:provider/provider.dart';
 DhflocalStore dhflocalStore =new DhflocalStore();
 class StaticNavigatorPage extends StatelessWidget {
   dynamic token =   dhflocalStore.getToken();
+
   @override
   Widget build(BuildContext context) {
+    Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(false);
     return new Scaffold(
       // appBar: new AppBar(
       //   title: new Text("静态路由页"),

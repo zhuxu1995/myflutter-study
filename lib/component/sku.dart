@@ -19,8 +19,9 @@ class Sku {
         itemSkuData=new Map<String,dynamic>(),
         SKUResult={}, //保存最后的组合结果信息
         theSelectedSku={}, //
-        price=0,
         skusPros= {};
+        
+  double price=0;
   Items item_data; //商品数据
   SkuProvider skuProvider;
   var oneSkuDefaultSelectedSku=new Skus();
@@ -56,7 +57,7 @@ class Sku {
           });
           // var newjsonsku=Map<String,dynamic>.from(vskus);
           data.skus = vskus;
-          // print("222222222222222,${sku_id}");
+          // print("222222222222222,${vskus[0].sku_id}");
           item_data = data;
           // //如果只有1个sku的话，默认选中
           // print("data type ${data.runtimeType}");
@@ -71,7 +72,7 @@ class Sku {
             var kids = [];
             var knames= [];
             var a = one.sku_properties.split(";");
-          //   // //console.log("aaaaaaa",a);
+            // print("one ${one}");
             a.forEach( (b) {
               if (b.isEmpty) return;
               var kkk = false;
@@ -118,7 +119,7 @@ class Sku {
               }
               
               zsku.propsval[c[0]] = c[2];
-              // print("c ${c}");
+              print("c ${c}");
               // // console.error("cccc",c);
               zsku.allkeys[c[0]] = zsku.allkeys[c[0]] ?? {};
               zsku.allkeys[c[0]][c[1]] = {
@@ -142,6 +143,7 @@ class Sku {
                   "img":one.imgurl
 
                 };  
+
                 zsku.itemSkuData["skus"].add(sku);
             }else{
               var sku= {
@@ -164,7 +166,8 @@ class Sku {
               "count": one.sku_stocks,
               "sku_id": one.sku_id
             };
-            zsku.price = one.sku_price;
+             zsku.price = one.sku_price;
+
           });
           // // zsku.cd.detectChanges();
           // // console.log("初始化状态：", zsku.price);

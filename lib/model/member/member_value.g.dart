@@ -1,0 +1,88 @@
+// GENERATED CODE - DO NOT MODIFY BY HAND
+
+part of 'member_value.dart';
+
+// **************************************************************************
+// JsonSerializableGenerator
+// **************************************************************************
+
+memberValue _$memberValueFromJson(Map<String, dynamic> json) {
+  return memberValue(
+    json['member_id'] as int,
+    json['app_id'] as String,
+    json['user_name'] as String,
+    json['name'] as String,
+    json['exp'] as int,
+    json['level'] as int,
+    json['sex'] as int,
+    json['avatar'] as String,
+    json['birthday'] as String,
+    json['phone'] as String,
+    json['address'] as String,
+    json['qq'] as String,
+    json['email'] as String,
+    json['reg_from'] as String,
+    json['reg_ip'] as String,
+    json['state'] as int,
+    json['reg_time'] as String,
+    json['last_login_time'] as String,
+    json['dynamic_token'] as String,
+    json['timeout_time'] as int,
+    json['client'] as String,
+    json['login_mode'] as int,
+    json['inviter_id'] as int,
+    json['open_id'] as String,
+    json['province'] as String,
+    json['city'] as String,
+    json['country'] as String,
+    json['unionid'] as String,
+    json['session_key'] as String,
+    json['privilege'] as String,
+    json['is_subscribe'] as bool,
+    json['login_store_id'] as int,
+    json['remark'] as String,
+    json['level_flag'] as int,
+    json['id_name'] as String,
+    json['id_code'] as String,
+  );
+}
+
+Map<String, dynamic> _$memberValueToJson(memberValue instance) =>
+    <String, dynamic>{
+      'member_id': instance.memberId,
+      'app_id': instance.appId,
+      'user_name': instance.userName,
+      'name': instance.name,
+      'exp': instance.exp,
+      'level': instance.level,
+      'sex': instance.sex,
+      'avatar': instance.avatar,
+      'birthday': instance.birthday,
+      'phone': instance.phone,
+      'address': instance.address,
+      'qq': instance.qq,
+      'email': instance.email,
+      'reg_from': instance.regFrom,
+      'reg_ip': instance.regIp,
+      'state': instance.state,
+      'reg_time': instance.regTime,
+      'last_login_time': instance.lastLoginTime,
+      'dynamic_token': instance.dynamicToken,
+      'timeout_time': instance.timeoutTime,
+      'client': instance.client,
+      'login_mode': instance.loginMode,
+      'inviter_id': instance.inviterId,
+      'open_id': instance.openId,
+      'province': instance.province,
+      'city': instance.city,
+      'country': instance.country,
+      'unionid': instance.unionid,
+      'session_key': instance.sessionKey,
+      'privilege': instance.privilege,
+      'is_subscribe': instance.isSubscribe,
+      'login_store_id': instance.loginStoreId,
+      'remark': instance.remark,
+      'level_flag': instance.levelFlag,
+      'id_name': instance.idName,
+      'id_code': instance.idCode,
+    };
