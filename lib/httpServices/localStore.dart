@@ -25,16 +25,15 @@ class DhflocalStore {
     return prefs;
   }
   getToken() async {
+    await initConfig();
     var val =prefs.getString("token");
-    print("222222 ${val}");
-    return  val??"";
+    return  val;
   }
   setData(key,data,{int ttl,int exp,bool noprev}) async{
     if(!noprev){
       key=this.getKeyName(key);
     }
     ttl = ttl * 1;
-    print("${key} ttl ${ttl}");
     if (ttl!=0) {
         ttl = ttl + this.timeSecond() * 1;
     } else {

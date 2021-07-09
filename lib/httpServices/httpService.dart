@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:dio_http_cache/dio_http_cache.dart';
 import 'package:flutter/material.dart';
 import 'package:dio/dio.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart' show rootBundle;
+import 'package:myappflutter/globalData/app.dart';
 import 'dart:io';
 import 'package:myappflutter/httpServices/localStore.dart';
 import 'package:myappflutter/main.dart';
@@ -11,8 +13,7 @@ import 'package:myappflutter/model/item_pack.dart';
 import 'package:myappflutter/model/member/member_value.dart';
 import 'package:myappflutter/model/pub_item_pack.dart';
 import 'package:provider/provider.dart';
-import 'package:dio_http_cache_extended/dio_http_cache_extended.dart';
-DhflocalStore dhflocalStore =new DhflocalStore();
+
 class _Headers  {
   static Map <String,dynamic> headersOb={HttpHeaders.acceptHeader:"accept: application/json, text/plain, */*"};
 }
@@ -23,7 +24,16 @@ class HttpService extends HttpServiceFu{
       ///请求header的配置
   BuildContext context;
   Dio dio =  Dio();
-  
+  DhflocalStore dhflocalStore;
+  HttpService(){
+     dhflocalStore=new DhflocalStore();
+  }
+
+  //小程序配置
+  wxAppConfigGet(data){
+    
+    return request('/public/wxappcfg/get', data);
+  }
   //省市区查询
   areaGet(data) {
       return request('/public/area/get', data);
@@ -88,8 +98,9 @@ class HttpService extends HttpServiceFu{
   itemGet(data)async {
       return request("/public/itempack/get?_allow_anonymous=true", data);
   }
-  itemPack(data) async{
-    return request("/rest/v1/itempack/get",data).then((result){
+  itemPack(data,{nocache=false}) async{
+    print("nocache ${nocache}");
+    return request("/rest/v1/itempack/get",data,dayNum:nocache?0:1).then((result){
        if(result.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
           result =new Map<String, dynamic>.from(result);
        }else if(result.runtimeType.toString().indexOf('_InternalLinkedHashMap')!=-1){
@@ -99,7 +110,7 @@ class HttpService extends HttpServiceFu{
     });
   }
   itemPackOne(itemId) async{
-    return itemPack({"query":{"item_id":itemId}}).then((result){
+    return itemPack({"query":{"item_id":itemId}},nocache:true).then((result){
        if(result.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
           result =new Map<String, dynamic>.from(result);
        }else if(result.runtimeType.toString().indexOf('_InternalLinkedHashMap')!=-1){
@@ -131,20 +142,22 @@ class HttpService extends HttpServiceFu{
         // if (isnotToken.isEmpty) {
         //     // path += "?_allow_anonymous=true";
         // }
-        return request(path, data, ttl:ttl);
+        return request(path, data, dayNum:ttl);
   }
-  request(String url,data,{int ttl=0}) async {
+  request(String url,data,{int dayNum=0}) async {
     
     dio.interceptors.add(new TokenInterceptor());
-    dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: "http://www.google.cn")).interceptor);
     // var config ;
     Map<String,dynamic>configJson;
-   
+    App _app = Provider.of<App>(context,listen: false);
     try{
       Future<String> loadConfigJson() async {
         return rootBundle.loadString('assets/config/config.json');
       }
-      configJson =jsonDecode(await loadConfigJson());
+      if(_app.config.isEmpty){
+        configJson =jsonDecode(await loadConfigJson());
+        _app.setConfig(configJson);
+      }
      
     }catch(e){
 
@@ -155,13 +168,12 @@ class HttpService extends HttpServiceFu{
     // print("config ${configJson['api']}");
     if(url.indexOf("/public")!=-1){
       // url= "https://api.dhfapp.com"+url;
-       url= configJson['api']+url;
+       url= _app.config['api']+url;
     }else if(url.indexOf("/auth")!=-1){
-       url= configJson['api2']+url;
+       url= _app.config['api2']+url;
       //  url= "http://localhost:4040"+url;
     }else if(url.indexOf("/rest/v1")!=-1|| url.indexOf('/api2') != -1){
       var token =await dhflocalStore.getToken();
-      print("2222222");
       if(token==null){
         BuildContext context = navigatorKey.currentState.overlay.context;  
         Navigator.pushNamed(context, "/login");
@@ -170,10 +182,10 @@ class HttpService extends HttpServiceFu{
       }
       print("options2 ${_Headers.headersOb}");
       if(url.indexOf("/rest/v1")!=-1){
-                url= configJson['api']+url;
+                url= _app.config['api']+url;
 
             }else{
-                url= configJson['api2']+url;
+                url= _app.config['api2']+url;
             }
         
     }
@@ -194,12 +206,23 @@ class HttpService extends HttpServiceFu{
     // var data1=FormData.fromMap(data);
     // print("${data1}");
     // print("data1 type ${data1.runtimeType}");
+    dio.interceptors.add(DioCacheManager(CacheConfig(baseUrl: url,defaultMaxAge:Duration(days: dayNum))).interceptor);
+
     Options options = Options(headers:_Headers.headersOb,responseType: ResponseType.json,contentType: "application/x-www-form-urlencoded; charset=UTF-8");
     var result;
     var response ;
+    
     try{
-      print("data ${data}");
-      response = await  dio.post(url,data: data,options: options);
+      print("data ${json.encode(data)}");
+      print("dayNum ${dayNum}");
+
+      response = await  dio.post(url,data: data,options:buildCacheOptions(
+        Duration(days: dayNum), 
+        maxStale: Duration(days: dayNum), 
+        options:options,
+        subKey:json.encode(data),
+        forceRefresh: (dayNum==0)
+	    ));
        if(response.data.runtimeType.toString()=="_InternalLinkedHashMap<String, dynamic>"){
           result =new Map<String, dynamic>.from(response.data);
           // result=response.data;
@@ -211,6 +234,13 @@ class HttpService extends HttpServiceFu{
        } else {
          result = response.data;
        }
+        if (null != response.headers.value(DIO_CACHE_HEADER_KEY_DATA_SOURCE)) {
+        // data come from cache
+          print("缓存 ${url}");
+        } else {
+            // data come from net
+          print("网络请求 ${url}");
+        }
       //  print("prin ${result}");
     }catch(e){
       // print("http $e");
@@ -233,7 +263,7 @@ class TokenInterceptor extends Interceptor{
       
   //   }
   // }
-  
+  // ,RequestInterceptorHandler handler
   @override
   Future onRequest(RequestOptions options) async{
     try{
@@ -243,6 +273,7 @@ class TokenInterceptor extends Interceptor{
       
     }
   }
+  // ,ErrorInterceptorHandler handler
   Future onError(DioError err) async{
     try{
       // print("eer ${err}");

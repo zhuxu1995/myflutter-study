@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/rendering.dart';
@@ -5,15 +7,19 @@ import 'package:myappflutter/component/footerTabBar.dart';
 import 'package:myappflutter/globalData/member.dart';
 import 'package:myappflutter/routes/routes.dart';
 import 'package:provider/provider.dart';
+import 'globalData/app.dart';
+import 'package:flutter/services.dart' show rootBundle;
 final GlobalKey<NavigatorState> navigatorKey = new GlobalKey<NavigatorState>();
 void main() {
   Map<String, WidgetBuilder> routes = new Map<String, WidgetBuilder>();
   MyRoutes.routes_list.forEach((val) => routes.addAll(val['route']));
+  
   runApp(
     MultiProvider(
       providers: [
         ChangeNotifierProvider.value(value: new MemberModel()),
         ChangeNotifierProvider.value(value: new TokenStatus()),
+        ChangeNotifierProvider.value(value:new App())
       ],
       child: new MaterialApp(
         title: 'Flutter Tutorial',
@@ -37,7 +43,9 @@ class TutorialHome extends State<MyApp> {
     static BuildContext appContext;
 
     @visibleForTesting
-    
+    Future<String> loadConfigJson() async {
+        return rootBundle.loadString('assets/config/config.json');
+    }
     @override
     Widget build(BuildContext context) {
       appContext=context;

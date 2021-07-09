@@ -1,13 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:myappflutter/globalData/member.dart';
+import 'package:myappflutter/helper/pageConfig.dart';
 import 'package:myappflutter/httpServices/localStore.dart';
 import 'package:provider/provider.dart';
-DhflocalStore dhflocalStore =new DhflocalStore();
+
 class StaticNavigatorPage extends StatelessWidget {
-  dynamic token =   dhflocalStore.getToken();
+
 
   @override
   Widget build(BuildContext context) {
+
     Provider.of<TokenStatus>(context,listen:false).setTokenGuoQi(false);
     return new Scaffold(
       // appBar: new AppBar(
@@ -31,18 +33,34 @@ class StaticNavigatorPage extends StatelessWidget {
       // ),
       floatingActionButton: new FloatingActionButton(
         onPressed: () {
-          print("22222222222 $token");
-          token.then((val){
-            print("111111$val");
-          });
+          
         },
         child: new Text("返回"),
       ),
       body: new Center(
-        child: Text("静态路由可以传入一个routes参数来定义路由。但是这里定义的路由是静态的，"
-            "它不可以向下一个页面传递参数，利用push到一个新页面,pushNamed方法是有一个Future的返回值的"
-            "，所以静态路由也是可以接收下一个页面的返回值的。但是不能向下一个页面传递参数"),
+        child: Home1(),
       ),
     );
   }
+}
+class Home1 extends StatefulWidget{
+  @override
+  _Home1 createState() =>_Home1();
+  
+}
+class _Home1 extends State<Home1>{
+  DhflocalStore dhflocalStore ;
+  dynamic token;
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+  }
+  @override
+  Widget build(BuildContext context) {
+    
+    // TODO: implement build
+    return new PageConfig();
+  }
+  
 }

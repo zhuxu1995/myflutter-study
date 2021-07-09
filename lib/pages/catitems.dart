@@ -102,12 +102,15 @@ class  _ItemScrollPage  extends State<ItemScroll>{
   }
   getCatItem() async{
     var query1 = {"page_no":item_pageNo,"page_size":item_pageSize,"query":{"store_id":1,"category_id":_cat.cid,"on_shelves":1}};
-    return httpService.itemPack(query1).then((res){
-      var items= pubItemPack.fromJson(res);
-      setState(() {
-        total_count=items.total_count;
-        itemList.addAll(items.items_pack);
-      });
+    return httpService.itemPack(query1,nocache:true).then((res){
+      if(res["total_count"]>0){
+        var items= pubItemPack.fromJson(res);
+        setState(() {
+          total_count=items.total_count;
+          itemList.addAll(items.items_pack);
+        });
+      }
+      
     });
   }
   @override

@@ -41,16 +41,16 @@ part 'order.g.dart';
   String actJson;
 
   @JsonKey(name: 'total_fee')
-  int totalFee;
+  double totalFee;
 
   @JsonKey(name: 'discount_fee')
-  int discountFee;
+  double discountFee;
 
   @JsonKey(name: 'discount_src')
   String discountSrc;
 
   @JsonKey(name: 'mjs_discount_fee')
-  int mjsDiscountFee;
+  double mjsDiscountFee;
 
   @JsonKey(name: 'balance_discount')
   int balanceDiscount;
@@ -59,7 +59,7 @@ part 'order.g.dart';
   int adjustFee;
 
   @JsonKey(name: 'post_fee')
-  int postFee;
+  double postFee;
 
   @JsonKey(name: 'packing_fee')
   int packingFee;
@@ -68,7 +68,7 @@ part 'order.g.dart';
   double payment;
 
   @JsonKey(name: 'total_tax')
-  int totalTax;
+  double totalTax;
 
   @JsonKey(name: 'refund_amount')
   int refundAmount;
@@ -146,19 +146,19 @@ part 'order.g.dart';
   int flowType;
 
   @JsonKey(name: 'weight')
-  int weight;
+  double weight;
 
   @JsonKey(name: 'food_id')
   String foodId;
 
   @JsonKey(name: 'coupon_fee')
-  int couponFee;
+  double couponFee;
 
   @JsonKey(name: 'account_json')
   String accountJson;
 
   @JsonKey(name: 'true_taxes_fee')
-  int trueTaxesFee;
+  double trueTaxesFee;
 
   @JsonKey(name: 'profit_status')
   int profitStatus;
@@ -170,7 +170,7 @@ part 'order.g.dart';
   int useIntegral;
 
   @JsonKey(name: 'integral_discount')
-  int integralDiscount;
+  double integralDiscount;
 
   @JsonKey(name: 'active_code')
   String activeCode;
@@ -234,25 +234,25 @@ part 'order.g.dart';
   int skuStocks;
 
   @JsonKey(name: 'price')
-  int price;
+  double price;
 
   @JsonKey(name: 'total_fee')
-  int totalFee;
+  double totalFee;
 
   @JsonKey(name: 'discount_fee')
-  int discountFee;
+  double discountFee;
 
   @JsonKey(name: 'discount_src')
   String discountSrc;
 
   @JsonKey(name: 'packing_fee')
-  int packingFee;
+  double packingFee;
 
   @JsonKey(name: 'payment')
   double payment;
 
   @JsonKey(name: 'item_tax')
-  int itemTax;
+  double itemTax;
 
   @JsonKey(name: 'limit_pay')
   String limitPay;
@@ -285,7 +285,7 @@ part 'order.g.dart';
   String deliveryAddrs;
 
   @JsonKey(name: 'weight')
-  int weight;
+  double weight;
 
   @JsonKey(name: 'barcode')
   String barcode;
@@ -297,7 +297,7 @@ part 'order.g.dart';
   bool isVirtual;
 
   @JsonKey(name: 'true_taxes_fee')
-  int trueTaxesFee;
+  double trueTaxesFee;
 
   @JsonKey(name: 'refund_state')
   int refundState;
